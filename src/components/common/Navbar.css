@@ -1,0 +1,9 @@
+.navbar-scrolled {
+    background-color: black !important;
+    transition: background-color 0.4s ease;
+  }
+  
+  .navbar {
+    transition: background-color 0.4s ease;
+  }
+  
