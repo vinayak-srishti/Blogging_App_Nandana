@@ -15,9 +15,7 @@ const Login = () => {
     event.preventDefault();
     const { Email, Password } = data;
 
-    if (!Email.trim() || !Password.trim()) {
-      setError("Email and password are required!");
-      return;
+    if (!Email.trim() || !Password.trim()) { 
     }
 
     axios.post("http://localhost:3002/Blog/UserLogin", { Email, Password })
@@ -25,20 +23,19 @@ const Login = () => {
         const resData = response.data;
 
         if (resData.Message === "User Login Successfully") {
-          const userId = resData.data._id;
+  const user = resData.data;
 
-          // 💾 Store in localStorage
-          localStorage.setItem("userId", userId);
+  if (!user.approved) {
+    setError("Your account is not yet approved by the admin. Please wait for approval.");
+    return;
+  }
 
-          setError("");
-          alert("Login Successful!");
-          navigate('/userviewprofile', { state: { userId } });
+  const userId = user._id;
+  localStorage.setItem("userId", userId);
+  alert("Login Successful!");
+  navigate('/userviewprofile', { state: { userId } });
+}
 
-        } else if (resData.Message === "Invalid Email or Password") {
-          setError("Invalid email or password. Please try again.");
-        } else {
-          setError("Unexpected server response. Please try again.");
-        }
       })
       .catch((error) => {
         console.error("Login error:", error);
@@ -48,7 +45,7 @@ const Login = () => {
 
   const handleResetClick = () => {
     setData({ Email: "", Password: "" });
-    navigate("/reset-password");
+    navigate("/user-resetpassword");
   };
 
   return (
@@ -84,7 +81,7 @@ const Login = () => {
           </div>
 
           <div className="mb-3 text-end">
-            <Link to="/forget-password" className="text-decoration-none me-3">
+            <Link to="/user-forgetpassword" className="text-decoration-none me-3">
               Forgot Password?
             </Link>
           </div>

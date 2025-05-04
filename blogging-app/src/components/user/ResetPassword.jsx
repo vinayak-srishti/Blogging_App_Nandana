@@ -1,66 +1,97 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!password.trim() || !confirmPassword.trim()) {
-      setError("Both fields are required!");
-      return;
-    }
+  if (!email || !newPassword || !confirmPassword) {
+    setError('All fields are required.');
+    return;
+  }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match!");
-      return;
-    }
+  if (newPassword !== confirmPassword) {
+    setError('Passwords do not match.');
+    return;
+  }
 
-    setError("");  
-    console.log("Password reset successful!");
+  try {
+    const response = await axios.post("http://localhost:3002/Blog/ForgotPassword", {
+      Email: email,
+      Password: newPassword
+    });
 
-  
-    navigate("/success");
-  };
+    setMessage(response.data.message || 'Password reset successful!');
+    setError('');
+    setTimeout(() => navigate('/login'), 2000);
+  } catch (err) {
+    setError(err.response?.data?.message || 'Error resetting password');
+    setMessage('');
+  }
+};
+
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="col-md-5 p-4 shadow-lg bg-white rounded">
-        <h2 className="text-center mb-4">Reset Password</h2>
+    <div className="container mt-5 d-flex justify-content-center p-5">
+      <div className="col-md-6">
+        <div className="card p-4 shadow">
+          <h3 className="text-center mb-4">Reset Password</h3>
 
-        {error && <div className="alert alert-danger text-center">{error}</div>}
+          {error && <div className="alert alert-danger">{error}</div>}
+          {message && <div className="alert alert-success">{message}</div>}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label">New Password</label>
-            <input
-              type="password"
-              className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter new password"
-            />
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label>Email Address</label>
+              <input
+                type="email"
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label>New Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label>Confirm New Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn btn-primary w-100">
+              Reset Password
+            </button>
+          </form>
+
+          <div className="text-center mt-3">
+            <a href="/login">Back to Login</a>
           </div>
-
-          <div className="mb-3">
-            <label className="form-label">Confirm New Password</label>
-            <input
-              type="password"
-              className="form-control"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm new password"
-            />
-          </div>
-
-          <div className="d-grid">
-            <button type="submit" className="btn btn-primary">Reset Password</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );

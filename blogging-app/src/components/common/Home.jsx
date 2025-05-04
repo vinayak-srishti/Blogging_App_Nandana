@@ -2,7 +2,7 @@ import React from "react";
 import "./Home.css";
 import blogillustration from "../../assets/blogIllustration.jpeg"
 import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+
 
 
 const Home = () => {
@@ -38,7 +38,7 @@ const Home = () => {
       </div>
       <nav>
       
-      <NavLink to="/admin-login" className="nav-link">Admin Login</NavLink>
+      
     </nav>
     </div>
   );
