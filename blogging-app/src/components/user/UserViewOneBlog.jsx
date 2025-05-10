@@ -44,6 +44,21 @@ const UserViewOneBlog = () => {
 
   return (
     <div className="container py-5 mt-5 p-5">
+      {/* Top-right "View Your Blogs" button */}
+      <div className="d-flex justify-content-end mb-3">
+  <button
+    className="btn btn-sm btn-secondary"
+    onClick={() =>
+      navigate("/userviewprofile", {
+        state: { userId: localStorage.getItem("userId") },
+      })
+    }
+  >
+    📄 View Your Blogs
+  </button>
+</div>
+
+
       <div className="card shadow-sm">
         {blog.image && (
           <img
@@ -52,12 +67,6 @@ const UserViewOneBlog = () => {
             className="card-img-top"
             style={{ maxHeight: '400px', objectFit: 'cover' }}
           />
-
-
-
-
-
-
         )}
         <div className="card-body">
           <h2 className="card-title">{blog.Title}</h2>
@@ -67,14 +76,16 @@ const UserViewOneBlog = () => {
         <div className="card-footer text-muted">
           <div className="d-flex justify-content-between align-items-center">
             <span>✍️ By: {blog.UserId?.Name || 'Unknown'}</span>
-            <div className="d-flex gap-2">
-              <button className="btn btn-outline-primary" onClick={handleEdit}>
-                ✏️ Edit
-              </button>
-              <button className="btn btn-outline-danger" onClick={handleDelete}>
-                🗑️ Delete
-              </button>
-            </div>
+            {localStorage.getItem("userId") === blog.UserId?._id && (
+              <div className="d-flex gap-2">
+                <button className="btn btn-outline-primary" onClick={handleEdit}>
+                  ✏️ Edit
+                </button>
+                <button className="btn btn-outline-danger" onClick={handleDelete}>
+                  🗑️ Delete
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

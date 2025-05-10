@@ -1,41 +1,72 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import './Login.css';
 
 const Login = () => {
   const [data, setData] = useState({ Email: "", Password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (event) => {
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const validateInputs = () => {
     const { Email, Password } = data;
 
-    if (!Email.trim() || !Password.trim()) { 
+    if (!Email || !Password) {
+      setError("Both fields are required.");
+      return false;
     }
 
-    axios.post("http://localhost:3002/Blog/UserLogin", { Email, Password })
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(Email)) {
+      setError("Please enter a valid email address.");
+      return false;
+    }
+
+    if (Password.length < 6) {
+      setError("Password should be at least 6 characters long.");
+      return false;
+    }
+
+    setError(""); // Clear previous errors
+    return true;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!validateInputs()) return;
+
+    const { Email, Password } = data;
+
+    axios
+      .post("http://localhost:3002/Blog/UserLogin", { Email, Password })
       .then((response) => {
         const resData = response.data;
 
         if (resData.Message === "User Login Successfully") {
-  const user = resData.data;
+          const user = resData.data;
 
-  if (!user.approved) {
-    setError("Your account is not yet approved by the admin. Please wait for approval.");
-    return;
-  }
+          if (!user.approved) {
+            setError("Your account is not yet approved by the admin.");
+            return;
+          }
 
-  const userId = user._id;
-  localStorage.setItem("userId", userId);
-  alert("Login Successful!");
-  navigate('/userviewprofile', { state: { userId } });
-}
+          localStorage.setItem("userId", user._id);
+          alert("Login Successful!");
 
+          const redirectedBlog = location.state?.blog;
+          if (redirectedBlog) {
+            navigate("/user-viewoneblog", { state: { blog: redirectedBlog } });
+          } else {
+            navigate("/userviewprofile", { state: { userId: user._id } });
+          }
+        } else {
+          setError(resData.Message || "Login failed.");
+        }
       })
       .catch((error) => {
         console.error("Login error:", error);
@@ -49,18 +80,18 @@ const Login = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="col-md-5 p-4 shadow-lg bg-white rounded">
-        <h2 className="text-center mb-4">Login</h2>
+    <div className="login-container">
+      <div className="login-box">
+        <h2 className="login-title">Login</h2>
 
-        {error && <div className="alert alert-danger text-center">{error}</div>}
+        {error && <div className="alert alert-danger login-alert">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Email</label>
             <input
               type="email"
-              className="form-control"
+              className="form-control login-input"
               value={data.Email}
               name="Email"
               onChange={handleChange}
@@ -72,7 +103,7 @@ const Login = () => {
             <label className="form-label">Password</label>
             <input
               type="password"
-              className="form-control"
+              className="form-control login-input"
               value={data.Password}
               name="Password"
               onChange={handleChange}
@@ -81,14 +112,14 @@ const Login = () => {
           </div>
 
           <div className="mb-3 text-end">
-            <Link to="/user-forgetpassword" className="text-decoration-none me-3">
+            <Link to="/user-forgetpassword" className="login-link me-3">
               Forgot Password?
             </Link>
           </div>
 
-          <div className="d-flex justify-content-between">
-            <button type="submit" className="btn btn-primary">Login</button>
-            <button type="button" className="btn btn-warning" onClick={handleResetClick}>
+          <div className="login-button-group">
+            <button type="submit" className="btn btn-primary w-50">Login</button>
+            <button type="button" className="btn btn-warning w-50" onClick={handleResetClick}>
               Reset Password
             </button>
           </div>

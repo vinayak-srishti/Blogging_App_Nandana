@@ -39,8 +39,6 @@ const AddBlog = () => {
       });
 
       alert("✅ Blog added successfully!");
-      console.log(response.data);
-
       setTitle('');
       setSubTitle('');
       setDescription('');
@@ -55,6 +53,20 @@ const AddBlog = () => {
 
   return (
     <div className="container mt-5 p-5">
+      {/* Top-right "View Your Blogs" button */}
+      <div className="d-flex justify-content-end mb-3">
+        <button
+          className="btn btn-sm btn-secondary"
+          onClick={() =>
+            navigate('/userviewprofile', {
+              state: { userId: localStorage.getItem('userId') },
+            })
+          }
+        >
+          📄 View Your Blogs
+        </button>
+      </div>
+
       <h2>Add Blog</h2>
       <form onSubmit={handleSubmit} encType="multipart/form-data" className="p-4 shadow bg-light rounded">
         <div className="mb-3">

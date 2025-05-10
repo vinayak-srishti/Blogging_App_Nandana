@@ -68,7 +68,7 @@ const EditProfile = () => {
   
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 p-5">
       <h2>Edit Profile</h2>
       <form onSubmit={handleSubmit} className="card p-4 shadow">
         <div className="mb-3">

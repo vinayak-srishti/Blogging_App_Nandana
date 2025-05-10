@@ -13,13 +13,19 @@ const EditBlog = () => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    if (blog) {
-      setTitle(blog.Title);
-      setSubTitle(blog.SubTitle);
-      setDiscription(blog.Discription);
-    } else {
-      navigate('/userviewprofile'); // Fallback
+    const loggedInUserId = localStorage.getItem('userId');
+
+    // If blog is missing or user is not authorized, redirect
+    if (!blog || loggedInUserId !== blog?.UserId?._id) {
+      alert('⛔ Unauthorized access to edit blog.');
+      navigate('/userviewprofile');
+      return;
     }
+
+    // Set blog data if authorized
+    setTitle(blog.Title);
+    setSubTitle(blog.SubTitle);
+    setDiscription(blog.Discription);
   }, [blog, navigate]);
 
   const handleSubmit = async (e) => {

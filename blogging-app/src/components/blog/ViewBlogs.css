@@ -1,0 +1,54 @@
+/* ViewBlogs.css */
+
+.viewblogs-container {
+  padding: 3rem;
+  background-color: #f9f9f9;
+}
+
+.viewblogs-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+.viewblogs-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 10px;
+}
+
+.viewblogs-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.viewblogs-card-img {
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.viewblogs-card-body {
+  padding: 1.2rem;
+}
+
+.viewblogs-card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.viewblogs-card-subtitle {
+  color: #777;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.viewblogs-card-footer {
+  font-size: 0.8rem;
+  color: #666;
+  background: #f1f1f1;
+  border-top: 1px solid #ddd;
+  padding: 0.75rem;
+}

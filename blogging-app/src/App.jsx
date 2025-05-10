@@ -26,6 +26,8 @@ import UserViewOneBlog from './components/user/UserViewOneBlog';
 import AdminViewOneBlog from './components/admin/AdminViewOneBlog';
 import EditBlog from './components/blog/EditBlog';
 
+import ViewBlogs from './components/blog/ViewBlogs';
+
 
 
 // import DeleteUser from './components/admin/DeleteUser';
@@ -50,8 +52,6 @@ function App() {
         
        
         
-        <Route path="/userviewprofile" element={<UserViewProfile/>} />
-
         <Route path="/admin-login" element={<AdminLogin/>} />
         <Route path="/admin-dashboard" element={<AdminDashboard/>} />
         <Route path="/user-editprofile" element={<EditProfile/>} />
@@ -61,6 +61,10 @@ function App() {
         <Route path="/admin-pendingusers" element={<PendingUsers/>} />
         {/* <Route path="/deleteusers" element={<DeleteUser />} /> */}
         <Route path="/admin-logout" element={<AdminLogout />} />
+
+        
+        <Route path="/userviewprofile" element={<UserViewProfile/>} />
+
         <Route path="/userlogout" element={<UserLogout />} />
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/user-addblog" element={<AddBlog/>} />
@@ -68,6 +72,7 @@ function App() {
         <Route path="/admin-viewoneblog" element={<AdminViewOneBlog/>} />
 
         <Route path="/user-editblog" element={<EditBlog/>} />
+        <Route path="/viewblogs" element={<ViewBlogs/>} />
 
 
 
