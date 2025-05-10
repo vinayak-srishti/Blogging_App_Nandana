@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import DeleteUser from "./DeleteUser"; 
+import './ViewOneUser.css'; 
 
 const ViewOneUser = () => {
   const { id } = useParams();
@@ -36,18 +37,20 @@ const ViewOneUser = () => {
   if (!user) return <p>Loading user...</p>;
 
   return (
-    <div className="container mt-5 p-5">
-      <h2>User Details</h2>
-      <ul className="list-group mb-3">
-        <li className="list-group-item"><strong>Name:</strong> {user?.Name}</li>
-        <li className="list-group-item"><strong>Email:</strong> {user?.Email}</li>
-        <li className="list-group-item"><strong>Phone No:</strong> {user?.PhoneNo}</li>
-        <li className="list-group-item"><strong>DOB:</strong> {user?.DOB}</li>
+    <div className="view-one-user-container">
+    <div className="view-one-user-card shadow">
+      <h2 className="view-one-user-title">👤 User Details</h2>
+      <ul className="view-one-user-list">
+        <li><strong>Name:</strong> {user?.Name}</li>
+        <li><strong>Email:</strong> {user?.Email}</li>
+        <li><strong>Phone No:</strong> {user?.PhoneNo}</li>
+        <li><strong>DOB:</strong> {new Date(user?.DOB).toLocaleDateString()}</li>
       </ul>
-      <button className="btn btn-danger" onClick={handleDelete}>
-        Delete User
+      <button className="view-one-user-delete-btn" onClick={handleDelete}>
+        🗑️ Delete User
       </button>
     </div>
+  </div>
   );
 };
 

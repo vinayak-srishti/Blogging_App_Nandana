@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './ViewAllBlogs.css'; // Import the CSS
 
 const ViewAllBlogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -21,39 +22,38 @@ const ViewAllBlogs = () => {
   }, []);
 
   return (
-    <div className="container mt-5 p-5">
-      <h3 className="text-center text-muted mb-5">📰 All Blogs</h3>
+    <div className="viewblogs-container">
+      <h3 className="viewblogs-title">📰 All Blogs</h3>
 
       {blogs.length === 0 ? (
-        <p className="text-center text-muted">No blogs available.</p>
+        <p className="viewblogs-empty">No blogs available.</p>
       ) : (
-        <div className="row g-5">
+        <div className="viewblogs-grid">
           {blogs.map((blog) => (
-            <div className="col-md-6 mb-4" key={blog._id}>
-              <div className="card h-100 shadow-sm">
-                {blog.image && (
-                  <img
-                    src={`http://localhost:3002/upload/${blog.image.filename}`}
-                    className="card-img-top"
-                    alt={blog.Title}
-                    style={{ height: '200px', objectFit: 'cover' }}
-                  />
-                )}
-                <div className="card-body">
-                  <h5 className="card-title">{blog.Title}</h5>
-                  <h6 className="card-subtitle text-muted mb-2">{blog.SubTitle}</h6>
-                  <p className="card-text">{blog.Discription?.slice(0, 100)}...</p>
-                  <Link
-                    to="/admin-viewoneblog"
-                    state={{ blog }}
-                    className="btn btn-sm btn-primary"
-                  >
-                    📖 Read More
-                  </Link>
-                </div>
-                <div className="card-footer small text-muted">
-                  ✍️ By: {blog.UserId?.Name || 'Unknown'} {/* Corrected here */}
-                </div>
+            <div className="viewblogs-card" key={blog._id}>
+              {blog.image && (
+                <img
+                  src={`http://localhost:3002/upload/${blog.image.filename}`}
+                  className="viewblogs-img"
+                  alt={blog.Title}
+                />
+              )}
+              <div className="viewblogs-body">
+                <h5 className="viewblogs-card-title">{blog.Title}</h5>
+                <h6 className="viewblogs-card-subtitle">{blog.SubTitle}</h6>
+                <p className="viewblogs-description">
+                  {blog.Discription?.slice(0, 100)}...
+                </p>
+                <Link
+                  to="/admin-viewoneblog"
+                  state={{ blog }}
+                  className="viewblogs-btn"
+                >
+                  📖 Read More
+                </Link>
+              </div>
+              <div className="viewblogs-footer">
+                ✍️ By: {blog.UserId?.Name || 'Unknown'}
               </div>
             </div>
           ))}

@@ -33,8 +33,8 @@ const ViewBlogs = () => {
   };
 
   return (
-    <div className="viewblogs-container container mt-5">
-  <h3 className="text-center viewblogs-heading">📰 All Blogs</h3>
+    <div className="viewblogs-container container mt-5 p-5">
+  <h3 className="text-center viewblogs-heading ">📰 All Blogs</h3>
 
   {blogs.length === 0 ? (
     <p className="text-center text-muted">No blogs available.</p>

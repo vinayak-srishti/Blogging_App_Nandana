@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import './UserViewProfile.css';
+
 
 const UserViewProfile = () => {
   const location = useLocation();
@@ -67,73 +69,66 @@ const UserViewProfile = () => {
   }, []);
 
   return (
-    <div className="container mt-5 p-5 position-relative">
-      {/* Account Menu */}
-      <div className="d-flex justify-content-end mb-4">
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          👤 Account
-        </button>
+    <div className="user-view-container">
+  <div className="user-account-menu">
+    <button
+      className="user-account-button"
+      onClick={() => setMenuOpen(!menuOpen)}
+    ><span className="material-icons">account_circle</span>
+    Account
+    </button>
 
-        {menuOpen && (
-          <div
-            ref={menuRef}
-            className="position-absolute shadow p-3 bg-white rounded"
-            style={{ top: '60px', right: '20px', zIndex: 1000, width: '200px' }}
-          >
-            <Link to="/user-profile" state={{ userId }} className="d-block mb-2 text-decoration-none text-dark">👁️ Profile</Link>
-            <Link to="/userviewprofile" state={{ userId }} className="d-block mb-2 text-decoration-none text-dark">📝 View My Blogs</Link>
-            <Link to="/user-editprofile" state={{ userId }} className="d-block mb-2 text-decoration-none text-dark">⚙️ Edit Profile</Link>
-            <Link to="/user-resetpassword" state={{ userId }} className="d-block text-decoration-none text-dark">🔑 Change Password</Link>
-          </div>
-        )}
+    {menuOpen && (
+      <div ref={menuRef} className="user-account-dropdown">
+        <Link to="/user-profile" state={{ userId }}>👁️ Profile</Link>
+        <Link to="/userviewprofile" state={{ userId }}>📝 View My Blogs</Link>
+        <Link to="/user-editprofile" state={{ userId }}>⚙️ Edit Profile</Link>
+        <Link to="/user-resetpassword" state={{ userId }}>🔑 Change Password</Link>
       </div>
+    )}
+  </div>
 
-      {/* Welcome Message */}
-      <h3 className="text-center text-muted mb-5">
-        {userData ? `Welcome, ${userData.Name}!` : 'Loading...'}
-      </h3>
+  <h3 className="user-welcome-text">
+    {userData ? `Welcome, ${userData.Name}!` : 'Loading...'}
+  </h3>
 
-      {/* Blogs */}
-      <h4 className="mb-4">📝 All Blogs</h4>
-      {blogs.length === 0 ? (
-        <p className="text-center text-muted">No blogs available.</p>
-      ) : (
-        <div className="row g-5">
-          {blogs.map((blog) => (
-            <div className="col-md-6 mb-4" key={blog._id}>
-              <div className="card h-100 shadow-sm">
-                {blog.image && (
-                  <img
-                    src={`http://localhost:3002/upload/${blog?.image?.filename}`}
-                    className="card-img-top"
-                    alt={blog.Title}
-                    style={{ height: "200px", objectFit: "cover" }}
-                  />
-                )}
-                <div className="card-body">
-                  <h5 className="card-title">{blog.Title}</h5>
-                  <h6 className="card-subtitle text-muted mb-2">{blog.SubTitle}</h6>
-                  <p className="card-text">{blog.Discription?.slice(0, 100)}...</p>
-                  <Link
-                    to="/user-viewoneblog"
-                    state={{ blog }}
-                    className="btn btn-sm btn-primary"
-                  >
-                    📖 Read More
-                  </Link>
-                </div>
-                <div className="card-footer small text-muted">
-                  ✍️ By: {blog.UserId?.Name || "Unknown"}
-                </div>
-              </div>
+  <h4 className="user-blogs-title">📝 All Blogs</h4>
+  {blogs.length === 0 ? (
+    <p className="text-center text-muted">No blogs available.</p>
+  ) : (
+    <div className="row g-5">
+      {blogs.map((blog) => (
+        <div className="col-md-6 mb-4" key={blog._id}>
+          <div className="card h-100 shadow-sm user-blog-card">
+            {blog.image && (
+              <img
+                src={`http://localhost:3002/upload/${blog?.image?.filename}`}
+                className="card-img-top user-blog-img"
+                alt={blog.Title}
+              />
+            )}
+            <div className="card-body">
+              <h5 className="card-title">{blog.Title}</h5>
+              <h6 className="card-subtitle text-muted mb-2">{blog.SubTitle}</h6>
+              <p className="card-text">{blog.Discription?.slice(0, 100)}...</p>
+              <Link
+                to="/user-viewoneblog"
+                state={{ blog }}
+                className="btn btn-sm btn-primary"
+              >
+                📖 Read More
+              </Link>
             </div>
-          ))}
+            <div className="card-footer user-blog-footer">
+              ✍️ By: {blog.UserId?.Name || "Unknown"}
+            </div>
+          </div>
         </div>
-      )}
+      ))}
     </div>
+  )}
+</div>
+
   );
 };
 
